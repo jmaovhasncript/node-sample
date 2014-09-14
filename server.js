@@ -11,16 +11,18 @@ http.listen(3000, function(){
 });
 
 var index = 0 ;
+var socketArray = {};
 
 io.on("connection" ,function(socket){
+    socketArray[socket] = socket;
     console.log("user connected ");
     console.log("user "+ ++index);
     socket.on('disconnect', function(){
         index--;
         console.log('user disconnected');
     });
-    socket.on("chat message" , function(msg){
+    socket.on("userName" , function(msg){
         console.log("message "+ msg);
-        io.emit('chat message', msg);
+        socket.emit('name', msg);
     })
 });

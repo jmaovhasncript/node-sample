@@ -5,32 +5,48 @@
     <script src="https://cdn.socket.io/socket.io-1.1.0.js"></script>
     <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font: 13px Helvetica, Arial; }
-        form { background: #000; padding: 3px; position: fixed; bottom: 0; width: 100%; }
-        form input { border: 0; padding: 10px; width: 90%; margin-right: .5%; }
-        form button { width: 9%; background: rgb(130, 224, 255); border: none; padding: 10px; }
-        #messages { list-style-type: none; margin: 0; padding: 0; }
-        #messages li { padding: 5px 10px; }
-        #messages li:nth-child(odd) { background: #eee; }
+      body{
+          margin: 0;
+
+      }
+        #container{
+            width: 300px;
+            height: 500px;
+            margin: 0 auto;
+            position: relative;
+            border: solid;
+            top: 50px;
+
+        }
+
+        #inputMessage{
+            display: none;
+        }
+
     </style>
 </head>
 <body>
-<div id="msg"></div>
-<form action="">
-    <input id="m" autocomplete="off" /><button>Send</button>
-</form>
+<div id="container">
+    <div id="userName"></div>
+    <form id="inputName">
+      <label for="name">Name</label><input id="name" placeholder="Enter ur name"/>
+        <input type="button" id="but" value="subbmit" />
+    </form>
+    <form id="inputMessage">
+        <label for="message"> Message</label><input id="message" />
+    </form>
+</div>
 
 <script>
     var socket = io();
-    socket.on("chat message" ,function(msg){
-        $('#msg').append($('<li>').text(msg));
+    socket.on("name" ,function(msg){
+       $('#userName')[0].innerText = "welcome : " + msg;
     })
-    $('form').submit(function(){
-        socket.emit('chat message', $('#m').val());
-        $('#m').val('');
+    $('#but').on('click',function(){
+        socket.emit('userName', $('#name').val());
+        $('#name').val('');
         return false;
-    });
+    })
 </script>
 </body>
 </html>
